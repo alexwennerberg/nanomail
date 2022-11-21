@@ -17,7 +17,11 @@ online public communication, such as discussion boards. It should be simple
 enough for a basic implementation to be easy, while thorough enough for public
 and private communication
 
-End-to-end encryption is a non-goal of nanomail. (TODO -- is this stupid?)
+All requests should be encased in TLS
+
+No fancy DNS stuff. If you want a custom domain, you gotta host your own server
+
+Only POP-like message receiving. nothing IMAP-like
 
 Structure of a message
 ---------------------
@@ -122,13 +126,9 @@ etc
 Pulling mail (client-server)
 ---------------------------
 
-Like POP. TODO authentication??  Something like https://www.rfc-editor.org/rfc/rfc7616 https://en.wikipedia.org/wiki/Digest_access_authentication should work!
+This is the part I'm the least sure on...
 
-See this old RFC https://datatracker.ietf.org/doc/html/rfc2195
-
-https://www.ietf.org/rfc/rfc1939.txt APOP
-
-SASL https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer
+How should auth work? TLS client certs? UNAME/pw? Should this even be part of the spec? Just rsync an sqlite file or something? Leaning towards this
 
 ```
 FETCH sally [signature]
