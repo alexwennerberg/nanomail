@@ -1,7 +1,8 @@
 Nanomail Specification
 ==============
 
-# 1 Overview 
+1 Overview 
+----------
 
 Nanomail is a text-based internet communication protocol, inspired by email. 
 
@@ -121,7 +122,7 @@ etc
 Pulling mail (client-server)
 ---------------------------
 
-Like POP
+Like POP. TODO authentication??  Something like https://www.rfc-editor.org/rfc/rfc7616 https://en.wikipedia.org/wiki/Digest_access_authentication should work!
 
 ```
 FETCH sally [signature]
