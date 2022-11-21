@@ -19,8 +19,6 @@ and private communication
 
 All requests should be encased in TLS
 
-No fancy DNS stuff. If you want a custom domain, you gotta host your own server
-
 Only POP-like message receiving. nothing IMAP-like
 
 Structure of a message
@@ -97,23 +95,30 @@ Client request:
 SEND
 Signature: abcdef123
 From: sally@example.com
-To: bob@gmail.com
+To: bob@whatever.example
 Subject: My Email
 
 Hello bob. Thanks for reading my email.
 ```
 
-gmail.com then makes a request to the nanomail server at example.com (if it doesnt have the key already):
+
+whatever.example then makes a request to the nanomail server at example.com (if it doesnt have the key already):
 
 ```
 GETKEY sally
 ```
 
-Which fetches the public keyy and validates the signature.
+Which fetches the public keyy and validates the signature. OR maybe it returns
+a URL where you can get the key? which could be either gemini:// or https:// or
+something else? this way, you can update your key without talking to the
+server? 
+
+This URL looks for the string nmail:somekey123 on the page. This is the cerca
+model of auth https://github.com/cblgh/cerca
 
 If key validation works, server will respond OK, else some error code
 
-status CODES:
+status CODES (not complete):
 ```
 20 OK
 40 INVALID REQUEST
@@ -126,15 +131,20 @@ etc
 Pulling mail (client-server)
 ---------------------------
 
-This is the part I'm the least sure on...
-
-How should auth work? TLS client certs? UNAME/pw? Should this even be part of the spec? Just rsync an sqlite file or something? Leaning towards this
+Use private key authentication
 
 ```
 FETCH sally [signature]
 ```
 
 Returns messages if there are any. Each request returns a message, or DONE
+
+Registering account (client-server)
+-------------------
+
+REGISTER uname (URL)
+
+If URL is one of the allowlisted URL hosts and uname DNE, you are registered
 
 Handling spam
 -------------
