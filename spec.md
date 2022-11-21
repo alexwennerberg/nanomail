@@ -126,6 +126,10 @@ Like POP. TODO authentication??  Something like https://www.rfc-editor.org/rfc/r
 
 See this old RFC https://datatracker.ietf.org/doc/html/rfc2195
 
+https://www.ietf.org/rfc/rfc1939.txt APOP
+
+SASL https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer
+
 ```
 FETCH sally [signature]
 ```
