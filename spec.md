@@ -1,53 +1,88 @@
-Nanomail Spec
+Nanomail Specification
 ==============
 
-A lighter-weight email replacement
+# 1 Overview 
 
-Deliberitly limited in scope for personal, text-based communication
+Nanomail is a text-based internet communication protocol, inspired by email. 
 
-Server runs on port 1999
+A nanomail server runs on port 1999 and handles receiving messages. A nanomail
+client signs messages and sends them to the destination server, as well as 
 
-Strucure of a message
+Nanomail combines many technologies that make up email infrastructure, like
+SMTP, POP and DMARC into a single, dramatically simpler specification.
+
+Nanomail is designed around personal, text-based communication, as well as for
+online public communication, such as discussion boards. It should be simple
+enough for a basic implementation to be easy, while thorough enough for public
+and private communication
+
+End-to-end encryption is a non-goal of nanomail. (TODO -- is this stupid?)
+
+Structure of a message
 ---------------------
 
-nanomail messages look a lot like email, but without the 50 years of annoying junk
-
-mail messages have a fixed set of exactly 4 headers:
+Nanomail messages look a lot like email messages. They have these
+headers, in the following order, followed by an empty line:
 
 ```
 Signature: abcdef123
 From: sally@example.com
 To: bob@gmail.com
+Sent-At: 2022-03-01T01:23:45
+Thread-Id: def789
 Subject: My Email
+
+Message body
 ```
 
-Followed by an empty newline, then the body of the email.
+Header values MUST NOT contain newline characters. Header names MUST include a
+space after the colon. Header names are not case sensitive. Headers SHOULD NOT
+be dupulicated, duplicate headers may be discarded. Header order after the
+signature is not relevant
 
-Header values cannoy contain newline characters.
+The body of a nanomail message MUST consist of UTF-8 formatted gemtext, as
+described in the  [Gemini specification](https://gemini.circumlunar.space/docs/specification.gmi).
 
 Email addresses must be of the format:
 
+```
 [some-text]@[valid URI]
+```
 
-some-text can't include an @ symbol
+Some-text can't include an @ symbol. TBD how to define a URI
 
-The body consists of gemtext-formatted text. See the [Gemini specification](https://gemini.circumlunar.space/docs/specification.gmi)
+Sent-at is a RFC3339? formatted datetime in UTC. Unlike in email, sent-at should be relatively close to received-at -- each attempt at delivery should update the sent-at field and re-sign the message.
+
+Thread-Id represents the thread that a message may be a part of. Threads
+consist of a linear, not tree-based structure.
+
+Signatures, or some truncated form of it, may be used as a 'message ID', e.g.
+for generating hyperlinks in a web forum.
 
 Signing the message
 ------------------
 
 Authentication is handled outside of the nanomail system. You are responsible for A. saving a message and B. putting your public key somewhere public.
 
-This is sort of like DMARC, but much simpler.
+This is sort of like DMARC, but uses the server instead of DNS records.
 
-Signatures are (....?) Something along the lines of HTTP signatures https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12#section-2.1.3
+We use an asymmetric key algorithm to verify the integrity and
+authenticity of a message.
 
-The signature signs everything after the newline at the end of the signature
+Signatures should use ED25519 (TODO Is it dumb to specify a key algo in the spec? maybe?)
+
+The signature signs everything after the newline at the end of the signature.
+
+Nanomail servers SHOULD verify that the Sent-At header of the message is within
+some reasonable time period.
 
 Sending mail 
 ------------
 
-Like SMTP
+A nanomail message represents one-to-one communication between a single sender
+and a single recepient. Think like physical mail in this anology.
+
+The nanomail client is solely responsible for sending messages to a server, similar to SMTP.
 
 No multiple recipients here. Think like physical mail
 
