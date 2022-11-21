@@ -8,3 +8,5 @@ Think of it like [Gemini](https://gemini.circumlunar.space/) for email.
 Read the [spec](spec.md) and/or check out the [reference implementation](./impl)
 
 HEAVILY WIP. Mostly me sketching out ideas at this point
+
+On Github for now until I get it self-hosted

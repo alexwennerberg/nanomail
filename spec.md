@@ -6,7 +6,7 @@ A lighter-weight email replacement
 Deliberitly limited in scope for personal, text-based communication
 
 Server runs on port 1999
-
+ideas
 Strucure of a message
 ---------------------
 
