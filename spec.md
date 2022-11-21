@@ -124,6 +124,8 @@ Pulling mail (client-server)
 
 Like POP. TODO authentication??  Something like https://www.rfc-editor.org/rfc/rfc7616 https://en.wikipedia.org/wiki/Digest_access_authentication should work!
 
+See this old RFC https://datatracker.ietf.org/doc/html/rfc2195
+
 ```
 FETCH sally [signature]
 ```
