@@ -1,4 +1,4 @@
-Nanomail ideas
+Nanomail Spec
 ==============
 
 A lighter-weight email replacement
