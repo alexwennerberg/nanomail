@@ -144,7 +144,11 @@ Registering account (client-server)
 
 REGISTER uname (URL)
 
-If URL is one of the allowlisted URL hosts and uname DNE, you are registered
+If URL is one of the allowlisted URL hosts and uname DNE, you are registered. 
+
+The URL should be a place containing the public ed25519 key (e.g. a personal website)
+
+You should keep this URL updated with your public key so that you can reliably send messages
 
 Handling spam
 -------------
