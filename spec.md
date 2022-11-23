@@ -155,3 +155,5 @@ Handling spam
 
 no one will use this, so no worries about spam. If they do, consider a server
 allowlist or blocklist (like how fediverse handles these things)
+
+server administrators should reserve postmaster@[host] to respond to any problems
