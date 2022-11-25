@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 type Nanomail struct {
 	Signature string
 	From      string
 	To        string
+	SentAt    time.Time
+	ThreadId  string
 	Subject   string
 	Body      string
 }
