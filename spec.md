@@ -40,7 +40,7 @@ Message body
 
 Header values MUST NOT contain newline characters. Header names MUST include a
 space after the colon. Header names are not case sensitive. Headers SHOULD NOT
-be dupulicated, duplicate headers may be discarded. Header order after the
+be duplicated, duplicate headers may be discarded. Header order after the
 signature is not relevant
 
 The body of a nanomail message MUST consist of UTF-8 formatted gemtext, as
