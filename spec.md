@@ -1,4 +1,4 @@
-Nanomail Specification
+Nanomail Specification (v0.0.0 DRAFT)
 ==============
 
 1 Overview 
@@ -7,7 +7,7 @@ Nanomail Specification
 Nanomail is a text-based internet communication protocol, inspired by email. 
 
 A nanomail server runs on port 1999 and handles receiving messages. A nanomail
-client signs messages and sends them to the destination server, as well as 
+client signs messages and sends them to the destination server.
 
 Nanomail combines many technologies that make up email infrastructure, like
 SMTP, POP and DMARC into a single, dramatically simpler specification.
@@ -15,11 +15,9 @@ SMTP, POP and DMARC into a single, dramatically simpler specification.
 Nanomail is designed around personal, text-based communication, as well as for
 online public communication, such as discussion boards. It should be simple
 enough for a basic implementation to be easy, while thorough enough for public
-and private communication
+and private communication.
 
-All requests should be encased in TLS
-
-Only POP-like message receiving. nothing IMAP-like
+All requests should be encased in TLS.
 
 Structure of a message
 ---------------------
@@ -31,7 +29,7 @@ headers, in the following order, followed by an empty line:
 Signature: abcdef123
 From: sally@example.com
 To: bob@gmail.com
-Sent-At: 2022-03-01T01:23:45
+Sent-At: 2022-03-01T01:23:45Z
 Thread-Id: def789
 Subject: My Email
 
@@ -54,13 +52,24 @@ Email addresses must be of the format:
 
 Some-text can't include an @ symbol. TBD how to define a URI
 
-Sent-at is a RFC3339? formatted datetime in UTC. Unlike in email, sent-at should be relatively close to received-at -- each attempt at delivery should update the sent-at field and re-sign the message.
+Sent-at is a datetime in UTC that must follow this RFC-3339 format:
+YYYY-MM-DDTHH:MM:SSZ.
+
+Unlike in email, sent-at should be relatively close to received-at -- each attempt at delivery should update the sent-at field and re-sign the message.
 
 Thread-Id represents the thread that a message may be a part of. Threads
-consist of a linear, not tree-based structure.
+consist of a linear, not tree-based structure. 
 
 Signatures, or some truncated form of it, may be used as a 'message ID', e.g.
 for generating hyperlinks in a web forum.
+
+Threading
+----------
+
+Clients SHOULD NOT change subjects for messages that are in the same thread.
+
+Threads SHOULD be sorted by Sent-At.
+
 
 Signing the message
 ------------------
@@ -72,7 +81,7 @@ This is sort of like DMARC, but uses the server instead of DNS records.
 We use an asymmetric key algorithm to verify the integrity and
 authenticity of a message.
 
-Signatures should use ED25519 (TODO Is it dumb to specify a key algo in the spec? maybe?)
+Signatures should use ED25519.
 
 The signature signs everything after the newline at the end of the signature.
 
@@ -89,7 +98,7 @@ The nanomail client is solely responsible for sending messages to a server, simi
 
 No multiple recipients here. Think like physical mail
 
-Client request:
+A client request consists of a command (in all caps) followed by CRLF and a message.
 
 ```
 SEND
@@ -128,6 +137,15 @@ status CODES (not complete):
 
 etc
 
+Receiving mail
+-------------
+
+Signature validation TBD
+
+Servers SHOULD validate that the Sent-At time is reasonably accurate, ie,
+consistent with a reasonable time that the message would take to be delivered.
+
+
 Pulling mail (client-server)
 ---------------------------
 
@@ -138,6 +156,8 @@ FETCH sally [signature]
 ```
 
 Returns messages if there are any. Each request returns a message, or DONE
+
+Servers SHOULD delete the message after it is fetched.
 
 Registering account (client-server)
 -------------------
@@ -153,7 +173,10 @@ You should keep this URL updated with your public key so that you can reliably s
 Handling spam
 -------------
 
-no one will use this, so no worries about spam. If they do, consider a server
-allowlist or blocklist (like how fediverse handles these things)
+No one will use this, so no worries about spam. If they do, consider a server
+allowlist or blocklist (like how fediverse handles these things). Nanomail is a
+"human-scale" technology: if your server becomes large enough that you cannot
+adequately moderate it, you should cap signups. Encourage self-hosting and
+single-user or few-user instances.
 
-server administrators should reserve postmaster@[host] to respond to any problems
+Server administrators should reserve postmaster@[host] to respond to any problems or abuse
